@@ -4,7 +4,7 @@
 ## Clone this repo
 
 ```bash
-git clone <url here>
+git clone https://github.com/jtowe1/sprint-report-api.git
 cd sprint-report-api
 ```
 
