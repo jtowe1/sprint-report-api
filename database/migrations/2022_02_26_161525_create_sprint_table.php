@@ -13,7 +13,7 @@ class CreateSprintTable extends Migration
      */
     public function up()
     {
-        Schema::create('sprints', function (Blueprint $table) {
+        Schema::create('sprint', function (Blueprint $table) {
             $table->integer('id')->primary();
             $table->text('name');
             $table->integer('board_id');

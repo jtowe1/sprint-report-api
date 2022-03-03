@@ -29,7 +29,7 @@ class SprintWriter
         DB::beginTransaction();
 
         error_log('Trying to Update Sprint');
-        $result = DB::table('sprints')
+        $result = DB::table('sprint')
             ->where('id', '=', $sprint->getId())
             ->update(
                 [
@@ -58,7 +58,7 @@ class SprintWriter
 
         try {
             error_log('Trying to insert Sprint');
-            DB::table('sprints')->insert(
+            DB::table('sprint')->insert(
                 [
                     'id' => $sprint->getId(),
                     'name' => $sprint->getName(),
