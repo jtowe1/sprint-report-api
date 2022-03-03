@@ -10,7 +10,7 @@ class SprintLoader
     public function loadById(int $id): array
     {
         $sprintData =
-            DB::table('sprints')
+            DB::table('sprint')
                 ->select()
                 ->where('id', '=', $id)
                 ->first();
