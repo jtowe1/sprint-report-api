@@ -116,7 +116,7 @@ class SprintChartService
 
     }
 
-    private function somethingElse(int $sprintId): Sprint
+    private function somethingElse(int $sprintId)
     {
 
 
