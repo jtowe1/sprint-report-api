@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BoardController;
 use App\Http\Controllers\SprintController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,5 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 */
 
-Route::get('board/{boardId}/sprint/{sprintId}', [SprintController::class, 'get']);
+Route::get('board', [BoardController::class, 'list']);
+Route::get('board/{id}', [BoardController::class, 'get']);
 Route::get('board/{boardId}/sprint', [SprintController::class, 'list']);
+Route::get('board/{boardId}/sprint/{sprintId}', [SprintController::class, 'get']);
