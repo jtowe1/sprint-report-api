@@ -21,3 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 */
 
 Route::get('board/{boardId}/sprint/{sprintId}', [SprintController::class, 'get']);
+Route::get('board/{boardId}/sprint', [SprintController::class, 'list']);
