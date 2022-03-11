@@ -3,7 +3,6 @@ services:
   php-apache:
     build: .
     container_name: sprint-report-api
-    image: php:8.0-apache
     volumes:
       - ./:/var/www/html/
     ports:
