@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Hydrators\SprintHydrator;
-use App\Loaders\SprintLoader;
-use App\Models\Sprint;
-use App\Repositories\SprintRepository;
 use App\Services\JiraApiService;
 use App\Services\SprintChartService;
 use Illuminate\Database\RecordsNotFoundException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Routing\Controller as BaseController;
 
-class SprintController extends Controller
+class SprintController extends BaseController
 {
     public function list(int $boardId, JiraApiService $client)
     {

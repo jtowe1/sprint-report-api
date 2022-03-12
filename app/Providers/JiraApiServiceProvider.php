@@ -11,8 +11,11 @@ class JiraApiServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(JiraApiService::class, function($app) {
-            $jiraBaseUrl = config('jira.baseUrl');
-            $jiraRestPath = config('jira.restPath');
+            // TODO: Figure out where to put config info (non .env stuff)
+            // $jiraBaseUrl = config('jira.baseUrl');
+            // $jiraRestPath = config('jira.restPath');
+            $jiraBaseUrl = 'https://api.atlassian.com/ex/jira/';
+            $jiraRestPath = '/rest/agile/1.0/';
             $jiraOrgId = env('JIRA_ORG_ID');
             $jiraBasicUsername = env('JIRA_BASIC_USERNAME');
             $jiraBasicToken = env('JIRA_BASIC_TOKEN');
