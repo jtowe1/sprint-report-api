@@ -5,11 +5,12 @@
 * php version >= 8.0
 * [composer](https://getcomposer.org/)
 
-## Clone this repo
+## Clone this repo and install packages
 
 ```bash
 git clone https://github.com/jtowe1/sprint-report-api.git
 cd sprint-report-api
+composer install
 ```
 
 ## Setup the environment
@@ -32,13 +33,21 @@ JIRA_BASIC_USERNAME="jira-basic-username"
 JIRA_BASIC_TOKEN="jira-basic-token"
 ```
 
-## Run with PHP built-in server
+
+
+## Start the stack
 
 ```bash
-php -S localhost:8008 -t public
+vendor/bin/sail up -d
+```
+## Run the database migrations (inside the app container shell)
+```bash
+vendor/bin/sail shell
+php artisan migrate
+exit
 ```
 
 ## Make a request
 ```bash
-curl localhost:8008/board/118/sprint/1136
+curl localhost/api/board/118/sprint/1136
 ```
