@@ -59,7 +59,7 @@ class Day implements JsonSerializable
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): Carbon
+    public function getUpdatedAt(): ?Carbon
     {
         return $this->updatedAt;
     }
