@@ -16,6 +16,7 @@ class DayHydrator
             $data['total_points_done'],
             $data['total_points_remaining'],
             $data['total_goal_points_done'],
+            $data['total_goal_points_remaining'],
             new Carbon($data['created_at']),
             !empty($data['updated_at']) ? new Carbon($data['updated_at']) : null
         );
