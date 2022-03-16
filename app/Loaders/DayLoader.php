@@ -10,7 +10,7 @@ class DayLoader
     public function loadById(int $id): array
     {
         $dayData =
-            DB::table('sprint')
+            DB::table('day')
                 ->select()
                 ->where('id', '=', $id)
                 ->first();
