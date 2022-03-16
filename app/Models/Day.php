@@ -3,30 +3,64 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use JsonSerializable;
 
-class Day
+class Day implements JsonSerializable
 {
-    /**
-     * This tables ids come from jira,
-     * so we do not want an auto incrementing id.
-     * Setting this var to false disables this in eloquent.
-     *
-     * @var false
-     */
-    public $incrementing = false;
+    public function __construct(
+        private int $id,
+        private int $dateCode,
+        private int $sprintId,
+        private string $totalPointsDone,
+        private string $totalPointsRemaining,
+        private string $totalGoalPointsDone,
+        private Carbon $createdAt,
+        private ?Carbon $updatedAt,
+    )
+    {}
 
-    public int $id;
-    public int $sprintId;
-    public Carbon $date;
-    public string $dayOfWeek;
-    public string $totalPointsDone;
-    public string $totalPointsRemaining;
-    public string $totalGoalPointsRemaining;
-
-    public function __construct()
+    public function jsonSerialize(): mixed
     {
-        $this->totalPointsRemaining = "0";
-        $this->totalPointsDone = "0";
-        $this->totalGoalPointsRemaining = "0";
+        return get_object_vars($this);
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getDateCode(): int
+    {
+        return $this->dateCode;
+    }
+
+    public function getSprintId(): int
+    {
+        return $this->sprintId;
+    }
+
+    public function getTotalPointsDone(): string
+    {
+        return $this->totalPointsDone;
+    }
+
+    public function getTotalPointsRemaining(): string
+    {
+        return $this->totalPointsRemaining;
+    }
+
+    public function getTotalGoalPointsDone(): string
+    {
+        return $this->totalGoalPointsDone;
+    }
+
+    public function getCreatedAt(): Carbon
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): ?Carbon
+    {
+        return $this->updatedAt;
     }
 }
