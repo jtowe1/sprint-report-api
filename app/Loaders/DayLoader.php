@@ -20,4 +20,18 @@ class DayLoader
 
         return get_object_vars($dayData);
     }
+
+    public function loadByDateCode(int $dateCode): array
+    {
+        $dayData =
+            DB::table('day')
+                ->select()
+                ->where('date_code', '=', $dateCode)
+                ->first();
+        if (!$dayData) {
+            throw new RecordsNotFoundException('Day not found with Date Code: ' . $dateCode);
+        }
+
+        return get_object_vars($dayData);
+    }
 }
