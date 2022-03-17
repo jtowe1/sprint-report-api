@@ -14,7 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('day', function (Blueprint $table) {
-            $table->string("total_goal_points_remaining");
+            $table
+                ->string("total_goal_points_remaining")
+                ->after("total_goal_points_done");
         });
     }
 
