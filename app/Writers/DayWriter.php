@@ -27,7 +27,6 @@ class DayWriter
             ->where('id', '=', $day->getId())
             ->update(
                 [
-                    'id' => $day->getId(),
                     'date_code' => $day->getDateCode(),
                     'sprint_id' => $day->getSprintId(),
                     'total_points_done' => $day->getTotalPointsDone(),
@@ -55,7 +54,6 @@ class DayWriter
             error_log('Trying to insert Day');
             DB::table('day')->insert(
                 [
-                    'id' => $day->getId(),
                     'date_code' => $day->getDateCode(),
                     'sprint_id' => $day->getSprintId(),
                     'total_points_done' => $day->getTotalPointsDone(),
