@@ -12,6 +12,7 @@ use Illuminate\Database\RecordsNotFoundException;
 
 class SprintChartService
 {
+    const DONE = 'Done';
     const ESTIMATE_FIELD = 'customfield_10002';
     const SPRINT_GOAL_FIELD = 'customfield_12101';
 
@@ -19,7 +20,9 @@ class SprintChartService
     public function __construct(
         private JiraApiService $client,
         private SprintRepository $sprintRepository,
-        private SprintHydrator $sprintHydrator
+        private SprintHydrator $sprintHydrator,
+        private array $sprintResponse = [],
+        private array $issuesResponse = []
     )
     {}
 
@@ -43,21 +46,37 @@ class SprintChartService
             $this->sprintRepository->save($sprint);
         }
 
+        $issuesResponse = $this->getIssuesFromJiraBySprintId($sprintId);
+        $totalPointsDone = $this->getTotalPointsDoneFromIssues($issuesResponse);
+        $totalPointsRemaining = $this->getTotalPointsRemainingFromIssues($issuesResponse);
+        $totalGoalPointsDone = $this->getTotalGoalPointsDoneFromIssues($issuesResponse);
+        $totalGoalPointsRemaining = $this->getTotalGoalPointsRemainingFromIssues($issuesResponse);
+
+        dd($totalPointsDone, $totalPointsRemaining, $totalGoalPointsDone, $totalGoalPointsRemaining);
+
+
         return $sprint;
     }
 
     private function getSprintFromJiraById(int $sprintId): array
     {
-        $rawSprintRespone = json_decode($this->client->getSprint($sprintId), true);
-
-        return $rawSprintRespone ?? [];
+        if (empty($this->sprintResponse)) {
+            $rawSprintRespone = json_decode($this->client->getSprint($sprintId), true);
+            $this->sprintResponse = $rawSprintRespone ?? [];
+        }
+        
+        return $this->sprintResponse;
     }
 
     private function getIssuesFromJiraBySprintId(int $sprintId): array
     {
-        $rawIssuesResponse = json_decode($this->client->getIssuesBySprintId($sprintId), true);
+        if (empty($this->issuesResponse)) {
+            $rawIssuesResponse = json_decode($this->client->getIssuesBySprintId($sprintId), true);
 
-        return $rawIssuesResponse['issues'] ?? [];
+            $this->issuesResponse = $rawIssuesResponse['issues'] ?? [];
+        }
+
+        return $this->issuesResponse;
     }
 
     private function buildNewSprintFromJiraResponse(array $sprintResponse, array $issuesResponse): Sprint
@@ -101,6 +120,38 @@ class SprintChartService
         return $totalGoalPoints;
     }
 
+    private function getTotalGoalPointsDoneFromIssues($issues)
+    {
+        $totalGoalPointsDone = 0;
+        foreach ($issues as $issue) {
+            if ($issue['fields']['status']['name'] === self::DONE) {
+                if ($issue['fields'][self::SPRINT_GOAL_FIELD] !== null
+                    && $issue['fields'][self::SPRINT_GOAL_FIELD][0]['value'] === 'Yes'
+                ) {
+                    $totalGoalPointsDone += $issue['fields'][self::ESTIMATE_FIELD];
+                }
+            }
+        }
+
+        return $totalGoalPointsDone;
+    }
+
+    private function getTotalGoalPointsRemainingFromIssues($issues)
+    {
+        $totalGoalPointsRemaining = 0;
+        foreach ($issues as $issue) {
+            if ($issue['fields']['status']['name'] !== self::DONE) {
+                if ($issue['fields'][self::SPRINT_GOAL_FIELD] !== null
+                    && $issue['fields'][self::SPRINT_GOAL_FIELD][0]['value'] === 'Yes'
+                ) {
+                    $totalGoalPointsRemaining += $issue['fields'][self::ESTIMATE_FIELD];
+                }
+            }
+        }
+
+        return $totalGoalPointsRemaining;
+    }
+
     private function getTotalPointsFromIssues($issues)
     {
         $totalPoints = 0;
@@ -109,6 +160,30 @@ class SprintChartService
         }
 
         return $totalPoints;
+    }
+
+    private function getTotalPointsDoneFromIssues($issues)
+    {
+        $totalPointsDone = 0;
+        foreach ($issues as $issue) {
+            if ($issue['fields']['status']['name'] === self::DONE) {
+                $totalPointsDone += $issue['fields'][self::ESTIMATE_FIELD];
+            }
+        }
+
+        return $totalPointsDone;
+    }
+
+    private function getTotalPointsRemainingFromIssues($issues)
+    {
+        $totalPointsRemaining = 0;
+        foreach ($issues as $issue) {
+            if ($issue['fields']['status']['name'] !== self::DONE) {
+                $totalPointsRemaining += $issue['fields'][self::ESTIMATE_FIELD];
+            }
+        }
+
+        return $totalPointsRemaining;
     }
 
     private function buildDays()
