@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Hydrators\DayHydrator;
 use App\Hydrators\SprintHydrator;
 use App\Models\Day;
 use App\Models\Sprint;
+use App\Repositories\DayRepository;
 use App\Repositories\SprintRepository;
 use Carbon\Carbon;
 use Exception;
@@ -19,8 +21,10 @@ class SprintChartService
 
     public function __construct(
         private JiraApiService $client,
-        private SprintRepository $sprintRepository,
+        private DayHydrator $dayHydrator,
+        private DayRepository $dayRepository,
         private SprintHydrator $sprintHydrator,
+        private SprintRepository $sprintRepository,
         private array $sprintResponse = [],
         private array $issuesResponse = []
     )
@@ -51,9 +55,20 @@ class SprintChartService
         $totalPointsRemaining = $this->getTotalPointsRemainingFromIssues($issuesResponse);
         $totalGoalPointsDone = $this->getTotalGoalPointsDoneFromIssues($issuesResponse);
         $totalGoalPointsRemaining = $this->getTotalGoalPointsRemainingFromIssues($issuesResponse);
+        $day = $this->dayHydrator->hydrate(
+            [
+                'id' => 1,
+                'date_code' => Carbon::now()->format('Ymd'),
+                'sprint_id' => $sprint->getId(),
+                'total_points_done' => $totalPointsDone,
+                'total_points_remaining' => $totalPointsRemaining,
+                'total_goal_points_done' => $totalGoalPointsDone,
+                'total_goal_points_remaining' => $totalGoalPointsRemaining,
+                'created_at' => Carbon::now()
+            ]
+        );
 
-        dd($totalPointsDone, $totalPointsRemaining, $totalGoalPointsDone, $totalGoalPointsRemaining);
-
+        $this->dayRepository->save($day);
 
         return $sprint;
     }
