@@ -49,10 +49,12 @@ class SprintChartService
             $sprint = $this->buildNewSprintFromJiraResponse($sprintResponse, $issuesResponse);
             $this->sprintRepository->save($sprint);
         }
+        if (Carbon::now()->isWeekday()) {
+            $issuesResponse = $this->getIssuesFromJiraBySprintId($sprintId);
+            $day = $this->buildNewDayFromJiraResponse($issuesResponse, $sprintId);
+            $this->dayRepository->save($day);
+        }
 
-        $issuesResponse = $this->getIssuesFromJiraBySprintId($sprintId);
-        $day = $this->buildNewDayFromJiraResponse($issuesResponse, $sprintId);
-        $this->dayRepository->save($day);
 
         return $sprint;
     }
