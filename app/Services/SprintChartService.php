@@ -57,7 +57,6 @@ class SprintChartService
         $totalGoalPointsRemaining = $this->getTotalGoalPointsRemainingFromIssues($issuesResponse);
         $day = $this->dayHydrator->hydrate(
             [
-                'id' => 1,
                 'date_code' => Carbon::now()->format('Ymd'),
                 'sprint_id' => $sprint->getId(),
                 'total_points_done' => $totalPointsDone,

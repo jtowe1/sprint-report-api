@@ -24,7 +24,7 @@ class DayWriter
 
         error_log('Trying to Update Day');
         $result = DB::table('day')
-            ->where('id', '=', $day->getId())
+            ->where('date_code', '=', $day->getDateCode())
             ->update(
                 [
                     'date_code' => $day->getDateCode(),
@@ -40,7 +40,7 @@ class DayWriter
 
         if ($result === 0) {
             error_log('Unable to Update Day');
-            throw new RecordsNotFoundException('Unable to update Day with id: ' . $day->getId());
+            throw new RecordsNotFoundException('Unable to update Day with Date Code: ' . $day->getDateCode());
         }
 
         return true;
