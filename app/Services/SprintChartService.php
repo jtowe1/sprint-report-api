@@ -51,6 +51,14 @@ class SprintChartService
         }
 
         $issuesResponse = $this->getIssuesFromJiraBySprintId($sprintId);
+        $day = $this->buildNewDayFromJiraResponse($issuesResponse, $sprintId);
+        $this->dayRepository->save($day);
+
+        return $sprint;
+    }
+
+    private function buildNewDayFromJiraResponse(array $issuesResponse, int $sprintId): Day
+    {
         $totalPointsDone = $this->getTotalPointsDoneFromIssues($issuesResponse);
         $totalPointsRemaining = $this->getTotalPointsRemainingFromIssues($issuesResponse);
         $totalGoalPointsDone = $this->getTotalGoalPointsDoneFromIssues($issuesResponse);
@@ -58,7 +66,7 @@ class SprintChartService
         $day = $this->dayHydrator->hydrate(
             [
                 'date_code' => Carbon::now()->format('Ymd'),
-                'sprint_id' => $sprint->getId(),
+                'sprint_id' => $sprintId,
                 'total_points_done' => $totalPointsDone,
                 'total_points_remaining' => $totalPointsRemaining,
                 'total_goal_points_done' => $totalGoalPointsDone,
@@ -67,10 +75,9 @@ class SprintChartService
             ]
         );
 
-        $this->dayRepository->save($day);
-
-        return $sprint;
+        return $day;
     }
+
 
     private function getSprintFromJiraById(int $sprintId): array
     {
