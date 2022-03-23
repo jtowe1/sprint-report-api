@@ -8,7 +8,7 @@ use JsonSerializable;
 class Day implements JsonSerializable
 {
     public function __construct(
-        private int $id,
+        private ?int $id,
         private int $dateCode,
         private int $sprintId,
         private string $totalPointsDone,
@@ -25,7 +25,7 @@ class Day implements JsonSerializable
         return get_object_vars($this);
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
