@@ -47,7 +47,59 @@ php artisan migrate
 exit
 ```
 
-## Make a request
-```bash
-curl localhost/api/board/118/sprint/1136
+## Create a User (Postman)
+Setup a POST request to `localhost:80/register` with the following headers
 ```
+Accept: application/json
+Referer: localhost:80
+X-XSRF-TOKEN: {{xsrf-token}}
+```
+And the following form body
+```
+name: <Your name>
+email: <Your email>
+password: <Your password>
+password_confirmation: <Your password>
+```
+And set the following as a `Pre-request Script`
+```js
+pm.sendRequest({
+    url: 'http://localhost:80/sanctum/csrf-cookie',
+    method: 'GET'
+}, function (error, response, { cookies }) {
+    if (!error) {
+        pm.environment.set('xsrf-token', cookies.get('XSRF-TOKEN'))
+    }
+})
+```
+You should get a `201 Created` response or a `422 Unprocessable Content` (with errors in response body)
+
+## Login (Postman)
+Setup a POST request to `localhost:80/login` with the following headers
+```
+Accept: application/json
+Referer: localhost:80
+X-XSRF-TOKEN: {{xsrf-token}}
+```
+And the following form body
+```
+email: <Your email>
+password: <Your password>
+```
+And set the following as a `Pre-request Script`
+```js
+pm.sendRequest({
+    url: 'http://localhost:80/sanctum/csrf-cookie',
+    method: 'GET'
+}, function (error, response, { cookies }) {
+    if (!error) {
+        pm.environment.set('xsrf-token', cookies.get('XSRF-TOKEN'))
+    }
+})
+```
+You should get a `200 OK` response or a `422 Unprocessable Content` (with errors in response body)
+
+Doing this will set a `XSRF-TOKEN` and `laravel_session` cookie in Postman that will now be sent with each request.  The `laravel_session` is your key to being logged in.
+
+## Read the api docs
+TODO: Link to built and rendered api docs will go here
