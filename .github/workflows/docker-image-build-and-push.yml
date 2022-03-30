@@ -3,6 +3,9 @@ name: Docker Image Build, Push, Deploy
 on:
   push:
     branches: [ main ]
+  # For testing only, will remove before merger
+  pull_request:
+    branches: [ main ]
 
 jobs:
   docker:
