@@ -72,9 +72,5 @@ RUN ln -sf /dev/stderr /var/log/nginx/error.log
 COPY --chown=nginx:nginx . .
 RUN composer install --no-dev
 
-# Configure Laravel logs
-RUN ln -sf /dev/stdout /var/www/html/storage/logs/laravel.log
-
 EXPOSE 80
-RUN echo "v0.0.2"
 CMD ["supervisord", "-c", "/etc/supervisor.d/supervisord.ini"]
