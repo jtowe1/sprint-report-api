@@ -25,6 +25,8 @@ jobs:
             username: ${{ secrets.USERNAME }}
             key: ${{ secrets.KEY }}
             script: |
-              whoami
-              ls -al
+              docker pull tehjrow/sprint-report-api:latest
+              docker stop sprint-report-api
+              docker rm sprint-report-api
+              docker run -p 80:80 --name sprint-report-api -d tehjrow/sprint-report-api
             
