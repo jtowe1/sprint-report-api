@@ -35,7 +35,7 @@ jobs:
           tags: tehjrow/sprint-report-api:latest
 
       - name: SCP docker-compose-prod.yml
-        uses: appleboy/scp-action@0.1.2
+        uses: appleboy/scp-action@v0.1.2
         with:
           host: ${{ secrets.HOST }}
           port: ${{ secrets.PORT }}
