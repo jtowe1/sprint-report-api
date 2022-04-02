@@ -40,6 +40,7 @@ jobs:
         steps:
         -
           uses: actions/checkout@v2
+        -
           uses: appleboy/ss-action@0.1.2
           with:
             host: ${{ secrets.HOST }}
@@ -48,6 +49,7 @@ jobs:
             key: ${{ secrets.KEY }}
             source: "docker-compose-prod.yml"
             target: "docker-compose-prod.yml"
+        -
           uses: appleboy/ssh-action@v0.1.4
           with:
             host: ${{ secrets.HOST }}
