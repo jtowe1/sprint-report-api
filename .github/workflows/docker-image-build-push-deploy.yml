@@ -42,7 +42,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           source: "docker-compose-prod.yml"
-          target: "docker-compose-prod.yml"
+          target: "~/"
 
       - name: SSH deploy new image
         uses: appleboy/ssh-action@v0.1.4
