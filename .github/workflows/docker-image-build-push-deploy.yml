@@ -34,11 +34,22 @@ jobs:
           platforms: linux/amd64,linux/arm/v7,linux/arm64/v8
           push: true
           tags: tehjrow/sprint-report-api:latest
-          
+
       -
         name: Deploy
-        uses: appleboy/ssh-action@v0.1.4
-        with:
+        steps:
+        -
+          uses: actions/checkout@v2
+          uses: appleboy/ss-action@0.1.2
+          with:
+            host: ${{ secrets.HOST }}
+            port: ${{ secrets.PORT }}
+            username: ${{ secrets.USERNAME }}
+            key: ${{ secrets.KEY }}
+            source: "docker-compose-prod.yml"
+            target: "docker-compose-prod.yml"
+          uses: appleboy/ssh-action@v0.1.4
+          with:
             host: ${{ secrets.HOST }}
             port: ${{ secrets.PORT }}
             username: ${{ secrets.USERNAME }}
@@ -47,4 +58,4 @@ jobs:
               docker pull tehjrow/sprint-report-api:latest
               docker stop sprint-report-api
               docker rm sprint-report-api
-              docker run -p 80:80 --name sprint-report-api -d tehjrow/sprint-report-api
+              docker-compose -f docker-compose-prod.yml up -d

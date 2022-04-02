@@ -1,7 +1,7 @@
 version: '3'
 services:
   app:
-    build:
-      dockerfile: Dockerfile
+    image: 'tehjrow/sprint-report-api'
+    container_name: sprint-report-api
     ports:
         - '80:80'
