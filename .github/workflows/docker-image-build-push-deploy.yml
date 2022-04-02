@@ -11,23 +11,22 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
-      -
-        name: Set up QEMU
+
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
+
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      -
-        name: Login to DockerHub
+
+      - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push
+
+      - name: Build and push
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -35,29 +34,25 @@ jobs:
           push: true
           tags: tehjrow/sprint-report-api:latest
 
-      -
-        name: Deploy
-        steps:
-        -
-          uses: actions/checkout@v2
-        -
-          uses: appleboy/ss-action@0.1.2
-          with:
-            host: ${{ secrets.HOST }}
-            port: ${{ secrets.PORT }}
-            username: ${{ secrets.USERNAME }}
-            key: ${{ secrets.KEY }}
-            source: "docker-compose-prod.yml"
-            target: "docker-compose-prod.yml"
-        -
-          uses: appleboy/ssh-action@v0.1.4
-          with:
-            host: ${{ secrets.HOST }}
-            port: ${{ secrets.PORT }}
-            username: ${{ secrets.USERNAME }}
-            key: ${{ secrets.KEY }}
-            script: |
-              docker pull tehjrow/sprint-report-api:latest
-              docker stop sprint-report-api
-              docker rm sprint-report-api
-              docker-compose -f docker-compose-prod.yml up -d
+      - name: SCP docker-compose-prod.yml
+        uses: appleboy/scp-action@0.1.2
+        with:
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          source: "docker-compose-prod.yml"
+          target: "docker-compose-prod.yml"
+
+      - name: SSH deploy new image
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: |
+            docker pull tehjrow/sprint-report-api:latest
+            docker stop sprint-report-api
+            docker rm sprint-report-api
+            docker-compose -f docker-compose-prod.yml up -d
