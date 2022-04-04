@@ -10,6 +10,8 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
+    env:
+      APP_KEY: ${{ secrets.APP_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -46,8 +48,6 @@ jobs:
 
       - name: SSH deploy new image
         uses: appleboy/ssh-action@v0.1.4
-        env:
-          APP_KEY: ${{ secrets.APP_KEY }}
         with:
           host: ${{ secrets.HOST }}
           port: ${{ secrets.PORT }}
