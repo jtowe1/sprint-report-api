@@ -55,7 +55,7 @@ jobs:
           key: ${{ secrets.KEY }}
           envs: APP_KEY
           script: |
-            echo "APP_KEY: $APP_KEY" > .env
+            echo "APP_KEY=$APP_KEY" > .env
             docker-compose -f docker-compose-prod.yml pull
             docker-compose -f docker-compose-prod.yml down
             docker-compose -f docker-compose-prod.yml up -d
