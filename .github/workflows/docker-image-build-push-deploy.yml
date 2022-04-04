@@ -52,7 +52,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           script: |
-            docker pull tehjrow/sprint-report-api:latest
-            docker stop sprint-report-api
-            docker rm sprint-report-api
+            docker-compose -f docker-compose-prod.yml pull
+            docker-compose -f docker-compose-prod.yml down
             docker-compose -f docker-compose-prod.yml up -d
