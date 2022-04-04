@@ -46,6 +46,8 @@ jobs:
 
       - name: SSH deploy new image
         uses: appleboy/ssh-action@v0.1.4
+        env:
+          APP_KEY: ${{ secrets.APP_KEY }}
         with:
           host: ${{ secrets.HOST }}
           port: ${{ secrets.PORT }}
