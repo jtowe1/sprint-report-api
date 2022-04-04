@@ -4,6 +4,6 @@ services:
     image: 'tehjrow/sprint-report-api'
     container_name: sprint-report-api
     environment:
-      APP_KEY: ${APP_KEY}
+      APP_KEY: '${APP_KEY}'
     ports:
         - '80:80'
