@@ -46,3 +46,8 @@ RUN apt-get install -y php8.1-intl
 RUN curl -sS https://getcomposer.org/installer -o composer-setup.php
 RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 RUN rm -rf composer-setup.php
+
+RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+RUN echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
+COPY /.p10k.zsh /root/.p10k.zsh
+COPY /.zshrc /root/.zshrc
