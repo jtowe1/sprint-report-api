@@ -1,7 +1,5 @@
 FROM ubuntu:21.10
 
-WORKDIR /var/www/html/
-
 RUN apt-get update
 
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata
