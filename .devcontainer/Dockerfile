@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y docker-ce-cli
 RUN curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 RUN chmod +x /usr/local/bin/docker-compose
 
-#Install PHP8.1
+#Install PHP8
 RUN add-apt-repository ppa:ondrej/php
 RUN apt-get update
 RUN apt-get install -y php8.0
