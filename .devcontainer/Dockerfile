@@ -24,23 +24,23 @@ RUN chmod +x /usr/local/bin/docker-compose
 #Install PHP8.1
 RUN add-apt-repository ppa:ondrej/php
 RUN apt-get update
-RUN apt-get install -y php8.1
-RUN apt-get install -y php8.1-common
-RUN apt-get install -y php8.1-mysql
-RUN apt-get install -y php8.1-xml
-RUN apt-get install -y php8.1-xmlrpc
-RUN apt-get install -y php8.1-curl
-RUN apt-get install -y php8.1-gd
-RUN apt-get install -y php8.1-imagick
-RUN apt-get install -y php8.1-cli
-RUN apt-get install -y php8.1-dev
-RUN apt-get install -y php8.1-imap
-RUN apt-get install -y php8.1-mbstring
-RUN apt-get install -y php8.1-opcache
-RUN apt-get install -y php8.1-soap
-RUN apt-get install -y php8.1-zip
-RUN apt-get install -y php8.1-redis
-RUN apt-get install -y php8.1-intl
+RUN apt-get install -y php8.0
+RUN apt-get install -y php8.0-common
+RUN apt-get install -y php8.0-mysql
+RUN apt-get install -y php8.0-xml
+RUN apt-get install -y php8.0-xmlrpc
+RUN apt-get install -y php8.0-curl
+RUN apt-get install -y php8.0-gd
+RUN apt-get install -y php8.0-imagick
+RUN apt-get install -y php8.0-cli
+RUN apt-get install -y php8.0-dev
+RUN apt-get install -y php8.0-imap
+RUN apt-get install -y php8.0-mbstring
+RUN apt-get install -y php8.0-opcache
+RUN apt-get install -y php8.0-soap
+RUN apt-get install -y php8.0-zip
+RUN apt-get install -y php8.0-redis
+RUN apt-get install -y php8.0-intl
 
 # Installing composer
 RUN curl -sS https://getcomposer.org/installer -o composer-setup.php
