@@ -5,7 +5,7 @@ RUN apt-get update
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata
 RUN apt-get install -y sudo curl git-core \
     zsh wget fonts-powerline locales \
-    ca-certificates gnupg \
+    ca-certificates gnupg mysql-client \
     lsb-release software-properties-common
 
 RUN locale-gen en_US.UTF-8
