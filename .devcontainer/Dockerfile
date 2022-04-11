@@ -1,4 +1,4 @@
-FROM ubuntu:21.10
+FROM --platform=amd64 ubuntu:21.10
 
 RUN apt-get update
 
