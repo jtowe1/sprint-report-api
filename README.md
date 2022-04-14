@@ -60,9 +60,12 @@ Requirements:
 - [VSCode](https://code.visualstudio.com/)
 - [The Remote Container extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
-Clone the project as usual. Configure the [.env](#setup-the-environment) file.  
-Open the Project in Vscode with the remote container exention installed. By default vscode should detect the devcontainer and prompt you to re-open within the container.  
+Clone the project and setup the .env file.
+
+Open the Project in Vscode with the remote container extension installed. By default vscode should detect the devcontainer and prompt you to re-open within the container.  
 You can also use the remote container extension to rebuild the devcontainer when attached to it, or to return to the local environment.
+
+Once connected you should be able to run `docker-compose up` and then `php artisan migrate` to configure the app.
 
 #### Docker
 Docker and docker-compose are installed inside the devcontainer, and the hosts docker socket is exposed.  
