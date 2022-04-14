@@ -1,7 +1,7 @@
 name: Docker Image Build, Push, Deploy
 
 on:
-  push:
+  pull_request:
     branches: [ main ]
 
 jobs:
@@ -45,14 +45,33 @@ jobs:
         uses: appleboy/ssh-action@v0.1.4
         env:
           APP_KEY: ${{ secrets.APP_KEY }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          JIRA_ORG_ID: ${{ secrets.JIRA_ORG_ID }}
+          JIRA_BASIC_USERNAME: ${{ secrets.JIRA_BASIC_USERNAME }}
+          JIRA_BASIC_TOKEN: ${{ secrets.JIRA_BASIC_TOKEN }}
         with:
           host: ${{ secrets.HOST }}
           port: ${{ secrets.PORT }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          envs: APP_KEY
+          envs: |
+            APP_KEY
+            DB_PASSWORD
+            JIRA_ORG_ID
+            JIRA_BASIC_USERNAME
+            JIRA_BASIC_TOKEN
           script: |
-            echo "APP_KEY=$APP_KEY" > .env
+            echo -e "APP_KEY=$APP_KEY\n" > .env
+            echo -e "APP_ENV=production\n" > .env
+            echo -e "DB_CONNECTION=mysql\n" >> .env
+            echo -e "DB_HOST=mysql\n" >> .env
+            echo -e "DB_PORT=3306\n" >> .env
+            echo -e "DB_DATABASE=sprint_charts\n" >> .env
+            echo -e "DB_USERNAME=sprint-charts\n" >> .env
+            echo -e "DB_PASSWORD=$DB_PASSWORD\n" >> .env
+            echo -e "JIRA_ORG_ID=$JIRA_ORG_ID\n" >> .env
+            echo -e "JIRA_BASIC_USERNAME=$JIRA_BASIC_USERNAME\n" >> .env
+            echo -e "JIRA_BASIC_TOKEN=$JIRA_BASIC_TOKEN\n" >> .env
             docker-compose -f docker-compose-prod.yml pull
             docker-compose -f docker-compose-prod.yml down
             docker-compose -f docker-compose-prod.yml up -d
