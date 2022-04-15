@@ -60,11 +60,11 @@ jobs:
             echo -e "APP_KEY=$APP_KEY" > .env
             echo -e "APP_ENV=production" >> .env
             echo -e "DB_CONNECTION=mysql" >> .env
-            echo -e "DB_HOST=mysql" >> .env
+            echo -e "DB_HOST=192.168.86.27" >> .env
             echo -e "DB_PORT=3306" >> .env
             echo -e "DB_DATABASE=sprint_charts" >> .env
-            echo -e "DB_USERNAME=sprint-charts" >> .env
-            echo -e "DB_PASSWORD=$DB_PASSWORD" >> .env
+            echo -e "DB_USERNAME=root" >> .env
+            echo -e "DB_PASSWORD='$DB_PASSWORD'" >> .env
             echo -e "JIRA_ORG_ID=$JIRA_ORG_ID" >> .env
             echo -e "JIRA_BASIC_USERNAME=$JIRA_BASIC_USERNAME" >> .env
             echo -e "JIRA_BASIC_TOKEN=$JIRA_BASIC_TOKEN" >> .env
