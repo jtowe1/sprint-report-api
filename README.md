@@ -51,3 +51,35 @@ exit
 ```bash
 curl localhost/api/board/118/sprint/1136
 ```
+
+## Alternate Install - Devcontainer Environment
+A devcontainer is included that can be used as an alternate install.  
+Read about devcontainers with vscode: https://code.visualstudio.com/docs/remote/containers
+
+Requirements:
+- [VSCode](https://code.visualstudio.com/)
+- [The Remote Container extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+Clone the project and setup the .env file.
+
+Open the Project in Vscode with the remote container extension installed. By default vscode should detect the devcontainer and prompt you to re-open within the container.  
+You can also use the remote container extension to rebuild the devcontainer when attached to it, or to return to the local environment.
+
+Once connected you should be able to run `docker-compose up` and then `php artisan migrate` to configure the app.
+
+#### Docker
+Docker and docker-compose are installed inside the devcontainer, and the hosts docker socket is exposed.  
+Running docker commands inside the container will run those on the host docker daemon and allow full ability to build and run the app while inside the devcontainer.
+
+A project name is set via `$COMPOSE_PROJECT_NAME` so that docker-compose will create containers within the devcontainers own project, which allows network sharing to be done.  
+
+This allows `php artisan` commands to be run within the devcontainer after starting the app with `docker-compose up`.
+
+#### Git
+Git config should be autoforwarded by vscode, however SSH keys are not.
+Vscode recommends using [SSH-Agent](https://code.visualstudio.com/docs/remote/containers#_using-ssh-keys) to forward your ssh keys.
+
+To do so, on the host environment run `ssh-add` to add your default ssh key or specify a specifc key:
+```
+ssh-add $HOME/.ssh/github_rsa
+```
