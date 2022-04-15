@@ -1,0 +1,73 @@
+name: Docker Image Build, Push, Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm/v7,linux/arm64/v8
+          push: true
+          tags: tehjrow/sprint-report-api:latest
+
+      - name: SCP docker-compose-prod.yml
+        uses: appleboy/scp-action@v0.1.2
+        with:
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          source: "docker-compose-prod.yml"
+          target: "~/"
+
+      - name: SSH deploy new image
+        uses: appleboy/ssh-action@v0.1.4
+        env:
+          APP_KEY: ${{ secrets.APP_KEY }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          JIRA_ORG_ID: ${{ secrets.JIRA_ORG_ID }}
+          JIRA_BASIC_USERNAME: ${{ secrets.JIRA_BASIC_USERNAME }}
+          JIRA_BASIC_TOKEN: ${{ secrets.JIRA_BASIC_TOKEN }}
+        with:
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          envs: |
+            APP_KEY,DB_PASSWORD,JIRA_ORG_ID,JIRA_BASIC_USERNAME,JIRA_BASIC_TOKEN
+          script: |
+            echo -e "APP_KEY=$APP_KEY" > .env
+            echo -e "APP_ENV=production" >> .env
+            echo -e "DB_CONNECTION=mysql" >> .env
+            echo -e "DB_HOST=192.168.86.27" >> .env
+            echo -e "DB_PORT=3306" >> .env
+            echo -e "DB_DATABASE=sprint_charts" >> .env
+            echo -e "DB_USERNAME=root" >> .env
+            echo -e "DB_PASSWORD='$DB_PASSWORD'" >> .env
+            echo -e "JIRA_ORG_ID=$JIRA_ORG_ID" >> .env
+            echo -e "JIRA_BASIC_USERNAME=$JIRA_BASIC_USERNAME" >> .env
+            echo -e "JIRA_BASIC_TOKEN=$JIRA_BASIC_TOKEN" >> .env
+            docker compose -f docker-compose-prod.yml pull
+            docker compose -f docker-compose-prod.yml down
+            docker compose -f docker-compose-prod.yml up -d

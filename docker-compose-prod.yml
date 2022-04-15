@@ -1,7 +1,18 @@
 version: '3'
 services:
   app:
-    build:
-      dockerfile: Dockerfile
+    image: 'tehjrow/sprint-report-api'
+    container_name: sprint-report-api
+    environment:
+      APP_KEY: '${APP_KEY}'
+      APP_ENV: '${APP_ENV}'
+      DB_HOST: '${DB_HOST}'
+      DB_PORT: '${DB_PORT}'
+      DB_DATABASE: '${DB_DATABASE}'
+      DB_USERNAME: '${DB_USERNAME}'
+      DB_PASSWORD: '${DB_PASSWORD}'
+      JIRA_ORG_ID: '${JIRA_ORG_ID}'
+      JIRA_BASIC_USERNAME: '${JIRA_BASIC_USERNAME}'
+      JIRA_BASIC_TOKEN: '${JIRA_BASIC_TOKEN}'
     ports:
-        - '80:80'
+        - '8080:80'
