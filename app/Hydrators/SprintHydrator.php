@@ -16,6 +16,7 @@ class SprintHydrator
             $data['length'],
             $data['total_points'],
             $data['total_goal_points'],
+            $data['days'],
             new Carbon($data['created_at']),
             !empty($data['updated_at']) ? new Carbon($data['updated_at']) : null
         );
