@@ -47,13 +47,69 @@ php artisan migrate
 exit
 ```
 
+## Create a User (Postman)
+Setup a POST request to `localhost:80/register` with the following headers
+```
+Accept: application/json
+Referer: localhost:80
+X-XSRF-TOKEN: {{xsrf-token}}
+```
+And the following form body
+```
+name: <Your name>
+email: <Your email>
+password: <Your password>
+password_confirmation: <Your password>
+```
+And set the following as a `Pre-request Script`
+```js
+pm.sendRequest({
+    url: 'http://localhost:80/sanctum/csrf-cookie',
+    method: 'GET'
+}, function (error, response, { cookies }) {
+    if (!error) {
+        pm.environment.set('xsrf-token', cookies.get('XSRF-TOKEN'))
+    }
+})
+```
+You should get a `201 Created` response or a `422 Unprocessable Content` (with errors in response body)
+
+## Login (Postman)
+Setup a POST request to `localhost:80/login` with the following headers
+```
+Accept: application/json
+Referer: localhost:80
+X-XSRF-TOKEN: {{xsrf-token}}
+```
+And the following form body
+```
+email: <Your email>
+password: <Your password>
+```
+And set the following as a `Pre-request Script`
+```js
+pm.sendRequest({
+    url: 'http://localhost:80/sanctum/csrf-cookie',
+    method: 'GET'
+}, function (error, response, { cookies }) {
+    if (!error) {
+        pm.environment.set('xsrf-token', cookies.get('XSRF-TOKEN'))
+    }
+})
+```
+You should get a `200 OK` response or a `422 Unprocessable Content` (with errors in response body)
+
+Doing this will set a `XSRF-TOKEN` and `laravel_session` cookie in Postman that will now be sent with each request.  The `laravel_session` is your key to being logged in.
+
+## Read the api docs
+TODO: Link to built and rendered api docs will go here
 ## Make a request
 ```bash
 curl localhost/api/board/118/sprint/1136
 ```
 
 ## Alternate Install - Devcontainer Environment
-A devcontainer is included that can be used as an alternate install.  
+A devcontainer is included that can be used as an alternate install.
 Read about devcontainers with vscode: https://code.visualstudio.com/docs/remote/containers
 
 Requirements:
@@ -62,16 +118,16 @@ Requirements:
 
 Clone the project and setup the .env file.
 
-Open the Project in Vscode with the remote container extension installed. By default vscode should detect the devcontainer and prompt you to re-open within the container.  
+Open the Project in Vscode with the remote container extension installed. By default vscode should detect the devcontainer and prompt you to re-open within the container.
 You can also use the remote container extension to rebuild the devcontainer when attached to it, or to return to the local environment.
 
 Once connected you should be able to run `docker-compose up` and then `php artisan migrate` to configure the app.
 
 #### Docker
-Docker and docker-compose are installed inside the devcontainer, and the hosts docker socket is exposed.  
+Docker and docker-compose are installed inside the devcontainer, and the hosts docker socket is exposed.
 Running docker commands inside the container will run those on the host docker daemon and allow full ability to build and run the app while inside the devcontainer.
 
-A project name is set via `$COMPOSE_PROJECT_NAME` so that docker-compose will create containers within the devcontainers own project, which allows network sharing to be done.  
+A project name is set via `$COMPOSE_PROJECT_NAME` so that docker-compose will create containers within the devcontainers own project, which allows network sharing to be done.
 
 This allows `php artisan` commands to be run within the devcontainer after starting the app with `docker-compose up`.
 
