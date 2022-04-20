@@ -14,6 +14,7 @@ class Sprint implements JsonSerializable
         private int $length,
         private string $totalPoints,
         private string $totalGoalPoints,
+        private ?DayCollection $days,
         private Carbon $createdAt,
         private ?Carbon $lastUpdated
     )
@@ -52,6 +53,11 @@ class Sprint implements JsonSerializable
     public function getTotalGoalPoints(): string
     {
         return $this->totalGoalPoints;
+    }
+
+    public function getDays(): DayCollection
+    {
+        return $this->days;
     }
 
     public function getCreatedDate(): Carbon
