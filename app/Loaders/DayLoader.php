@@ -34,4 +34,22 @@ class DayLoader
 
         return get_object_vars($dayData);
     }
+
+    public function loadBySprintId(int $sprintId): array
+    {
+        $dayData =
+            DB::table('day')
+                ->select()
+                ->where('sprint_id', '=', $sprintId)
+                ->get();
+        if (!$dayData) {
+            throw new RecordsNotFoundException('Day not found with Sprint Id: ' . $sprintId);
+        }
+
+        return $dayData->map(
+            fn($item, $key) => get_object_vars($item)
+        )->all();
+
+        // return get_object_vars($dayData);
+    }
 }
