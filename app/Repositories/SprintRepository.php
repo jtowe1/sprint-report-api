@@ -12,13 +12,15 @@ class SprintRepository
     public function __construct(
         private SprintLoader $sprintLoader,
         private SprintHydrator $sprintHydrator,
-        private SprintWriter $sprintWriter
+        private SprintWriter $sprintWriter,
+        private DayRepository $dayRepository
     )
     {}
 
     public function loadById(int $id): Sprint
     {
         $sprintData = $this->sprintLoader->loadById($id);
+        $sprintData["days"] = $this->dayRepository->loadBySprintId($id);
         $sprint = $this->sprintHydrator->hydrate($sprintData);
 
         return $sprint;
