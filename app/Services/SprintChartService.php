@@ -55,6 +55,7 @@ class SprintChartService
             $this->dayRepository->save($day);
         }
 
+        $sprint = $this->sprintRepository->loadById($sprintId);
 
         return $sprint;
     }
@@ -87,7 +88,7 @@ class SprintChartService
             $rawSprintRespone = json_decode($this->client->getSprint($sprintId), true);
             $this->sprintResponse = $rawSprintRespone ?? [];
         }
-        
+
         return $this->sprintResponse;
     }
 
