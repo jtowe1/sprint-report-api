@@ -55,7 +55,7 @@ class Sprint implements JsonSerializable
         return $this->totalGoalPoints;
     }
 
-    public function getDays(): DayCollection
+    public function getDays(): ?DayCollection
     {
         return $this->days;
     }
