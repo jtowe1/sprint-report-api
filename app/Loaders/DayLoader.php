@@ -49,7 +49,5 @@ class DayLoader
         return $dayData->map(
             fn($item, $key) => get_object_vars($item)
         )->all();
-
-        // return get_object_vars($dayData);
     }
 }
