@@ -121,6 +121,8 @@ class SprintChartService
                 'id' => $sprintResponse['id'],
                 'name' => $sprintResponse['name'],
                 'board_id' => $sprintResponse['originBoardId'],
+                'start_date' => $sprintStartDate,
+                'end_date' => $sprintEndDate,
                 'length' => $sprintLength,
                 'total_points' => $totalPoints,
                 'total_goal_points' => $totalGoalPoints,
