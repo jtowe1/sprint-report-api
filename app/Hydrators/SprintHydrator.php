@@ -13,6 +13,8 @@ class SprintHydrator
             $data['id'],
             $data['name'],
             $data['board_id'],
+            $data['start_date'],
+            $data['end_date'],
             $data['length'],
             $data['total_points'],
             $data['total_goal_points'],
