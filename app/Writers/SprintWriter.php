@@ -65,6 +65,8 @@ class SprintWriter
                     'id' => $sprint->getId(),
                     'name' => $sprint->getName(),
                     'board_id' => $sprint->getBoardId(),
+                    'start_date' => $sprint->getStartDate(),
+                    'end_date' => $sprint->getEndDate(),
                     'length' => $sprint->getLength(),
                     'total_points' => $sprint->getTotalPoints(),
                     'total_goal_points' => $sprint->getTotalGoalPoints(),
