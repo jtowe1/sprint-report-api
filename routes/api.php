@@ -21,7 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 */
 
-Route::get('board', [BoardController::class, 'list']);
-Route::get('board/{id}', [BoardController::class, 'get']);
-Route::get('board/{boardId}/sprint', [SprintController::class, 'list']);
+Route::middleware(['auth:sanctum','verified'])->get('board', [BoardController::class, 'list']);
+Route::middleware(['auth:sanctum','verified'])->get('board/{id}', [BoardController::class, 'get']);
+Route::middleware(['auth:sanctum','verified'])->get('board/{boardId}/sprint', [SprintController::class, 'list']);
 Route::middleware(['auth:sanctum','verified'])->get('board/{boardId}/sprint/{sprintId}', [SprintController::class, 'get']);
