@@ -127,9 +127,9 @@ class SprintChartService
                 'id' => $sprintResponse['id'],
                 'name' => $sprintResponse['name'],
                 'board_id' => $sprintResponse['originBoardId'],
+                'length' => $sprintLength,
                 'start_date' => $sprintStartDate,
                 'end_date' => $sprintEndDate,
-                'length' => $sprintLength,
                 'total_points' => $totalPoints,
                 'total_goal_points' => $totalGoalPoints,
                 'created_at' => Carbon::now()
