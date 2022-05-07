@@ -14,11 +14,11 @@ class SprintHydrator
             $data['name'],
             $data['board_id'],
             $data['length'],
-            new Carbon($data['start_date']),
-            new Carbon($data['end_date']),
+            !empty($data['start_date']) ? new Carbon($data['start_date']) : null,
+            !empty($data['end_date']) ? new Carbon($data['end_date']) : null,
             $data['total_points'],
             $data['total_goal_points'],
-            array_key_exists('days', $data) ? $data['days'] : null,
+            !empty($data['days']) ? $data['days'] : null,
             new Carbon($data['created_at']),
             !empty($data['updated_at']) ? new Carbon($data['updated_at']) : null
         );
