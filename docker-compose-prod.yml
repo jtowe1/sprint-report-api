@@ -14,5 +14,6 @@ services:
       JIRA_ORG_ID: '${JIRA_ORG_ID}'
       JIRA_BASIC_USERNAME: '${JIRA_BASIC_USERNAME}'
       JIRA_BASIC_TOKEN: '${JIRA_BASIC_TOKEN}'
+      SESSION_DOMAIN: '${SESSION_DOMAIN}'
     ports:
         - '8080:80'
