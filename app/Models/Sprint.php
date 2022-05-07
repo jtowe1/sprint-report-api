@@ -11,9 +11,9 @@ class Sprint implements JsonSerializable
         private int $id,
         private string $name,
         private int $boardId,
+        private int $length,
         private ?Carbon $startDate,
         private ?Carbon $endDate,
-        private int $length,
         private string $totalPoints,
         private string $totalGoalPoints,
         private ?DayCollection $days,
@@ -42,6 +42,11 @@ class Sprint implements JsonSerializable
         return $this->boardId;
     }
 
+    public function getLength(): int
+    {
+        return $this->length;
+    }
+
     public function getStartDate(): ?Carbon
     {
         return $this->startDate;
@@ -50,11 +55,6 @@ class Sprint implements JsonSerializable
     public function getEndDate(): ?Carbon
     {
         return $this->endDate;
-    }
-
-    public function getLength(): int
-    {
-        return $this->length;
     }
 
     public function getTotalPoints(): string
