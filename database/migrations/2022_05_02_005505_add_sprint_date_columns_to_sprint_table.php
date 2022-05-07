@@ -17,7 +17,7 @@ return new class extends Migration
             $table
                 ->date("start_date")
                 ->nullable()
-                ->after("board_id");
+                ->after("length");
             $table
                 ->date("end_date")
                 ->nullable()
