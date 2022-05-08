@@ -51,10 +51,7 @@ class SprintChartService
             $this->sprintRepository->save($sprint);
         }
         if (Carbon::now()->isWeekday()) {
-            
-            $period = CarbonPeriod::create($sprint->getStartDate(), $sprint->getEndDate());
-
-            if ($period->contains(Carbon::now())) {
+            if ($sprint->containsToday()) {
                 $issuesResponse = $this->getIssuesFromJiraBySprintId($sprintId);
                 $day = $this->buildNewDayFromJiraResponse($issuesResponse, $sprintId);
                 $this->dayRepository->save($day);
