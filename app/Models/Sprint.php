@@ -83,7 +83,7 @@ class Sprint implements JsonSerializable
         return $this->lastUpdated;
     }
 
-    public function containsToday(): Bool
+    public function containsToday(): bool
     {
         if (empty($this->startDate)  or empty($this->endDate)) {
             return false;
