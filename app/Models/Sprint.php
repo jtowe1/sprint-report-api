@@ -85,7 +85,7 @@ class Sprint implements JsonSerializable
 
     public function containsToday(): bool
     {
-        if (empty($this->startDate)  or empty($this->endDate)) {
+        if (empty($this->getStartDate()) || $this->getEndDate()) {
             return false;
         }
         else {
