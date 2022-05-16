@@ -85,13 +85,15 @@ class Sprint implements JsonSerializable
 
     public function containsToday(): bool
     {
-        if (empty($this->getStartDate()) || $this->getEndDate()) {
-            return false;
-        }
-        else {
-            $period = CarbonPeriod::create($this->getStartDate(), $this->getEndDate());
+        $period = $this->sprintPeriod();
+        return !empty($period) ? $period->contains(Carbon::now()) : false;
+    }
 
-            return $period->contains(Carbon::now());
+    public function sprintPeriod(): ?CarbonPeriod
+    {
+        if (empty($this->getStartDate()) || empty($this->getEndDate())) {
+            return null;
         }
+        return CarbonPeriod::create($this->getStartDate(), $this->getEndDate());
     }
 }
