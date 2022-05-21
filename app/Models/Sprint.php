@@ -85,6 +85,9 @@ class Sprint implements JsonSerializable
 
     public function containsToday(): bool
     {
+        if (Carbon::now()->isWeekend()) {
+            return false;
+        }
         $period = $this->sprintPeriod();
         return !empty($period) ? $period->contains(Carbon::now()) : false;
     }

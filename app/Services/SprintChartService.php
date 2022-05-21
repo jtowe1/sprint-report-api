@@ -50,14 +50,13 @@ class SprintChartService
             $this->sprintRepository->save($sprint);
         }
 
-        if (Carbon::now()->isWeekday()) {
-            if ($sprint->containsToday()) {
-                $issuesResponse = $this->getIssuesFromJiraBySprintId($sprintId);
-                $day = $this->buildNewDayFromJiraResponse($issuesResponse, $sprintId);
-                $this->dayRepository->save($day);
-                $sprint = $this->sprintRepository->loadById($sprintId);
-            }
+        if ($sprint->containsToday()) {
+            $issuesResponse = $this->getIssuesFromJiraBySprintId($sprintId);
+            $day = $this->buildNewDayFromJiraResponse($issuesResponse, $sprintId);
+            $this->dayRepository->save($day);
+            $sprint = $this->sprintRepository->loadById($sprintId);
         }
+
 
         return $sprint;
     }
