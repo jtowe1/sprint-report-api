@@ -9,7 +9,6 @@ use App\Models\Sprint;
 use App\Repositories\DayRepository;
 use App\Repositories\SprintRepository;
 use Carbon\Carbon;
-use Carbon\CarbonPeriod;
 use Exception;
 use Illuminate\Database\RecordsNotFoundException;
 
@@ -50,18 +49,14 @@ class SprintChartService
             $sprint = $this->buildNewSprintFromJiraResponse($sprintResponse, $issuesResponse);
             $this->sprintRepository->save($sprint);
         }
-        if (Carbon::now()->isWeekday()) {
-            
-            $period = CarbonPeriod::create($sprint->getStartDate(), $sprint->getEndDate());
 
-            if ($period->contains(Carbon::now())) {
-                $issuesResponse = $this->getIssuesFromJiraBySprintId($sprintId);
-                $day = $this->buildNewDayFromJiraResponse($issuesResponse, $sprintId);
-                $this->dayRepository->save($day);
-            }
+        if ($sprint->containsToday()) {
+            $issuesResponse = $this->getIssuesFromJiraBySprintId($sprintId);
+            $day = $this->buildNewDayFromJiraResponse($issuesResponse, $sprintId);
+            $this->dayRepository->save($day);
+            $sprint = $this->sprintRepository->loadById($sprintId);
         }
 
-        $sprint = $this->sprintRepository->loadById($sprintId);
 
         return $sprint;
     }

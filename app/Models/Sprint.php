@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use JsonSerializable;
 
 class Sprint implements JsonSerializable
@@ -80,5 +81,22 @@ class Sprint implements JsonSerializable
     public function getLastUpdatedDate(): Carbon
     {
         return $this->lastUpdated;
+    }
+
+    public function containsToday(): bool
+    {
+        if (Carbon::now()->isWeekend()) {
+            return false;
+        }
+        $period = $this->sprintPeriod();
+        return !empty($period) ? $period->contains(Carbon::now()) : false;
+    }
+
+    public function sprintPeriod(): ?CarbonPeriod
+    {
+        if (empty($this->getStartDate()) || empty($this->getEndDate())) {
+            return null;
+        }
+        return CarbonPeriod::create($this->getStartDate(), $this->getEndDate());
     }
 }
